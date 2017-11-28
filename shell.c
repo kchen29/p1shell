@@ -30,28 +30,28 @@ char **parse_args(char *line) {
 
 int main() {
   char s[256];
-  
-  //get data
-  fgets(s, sizeof(s), stdin);
-  //remove newline from fgets
-  *(strchr(s, '\n')) = 0;
-  
-  //parse
-  char **args = parse_args(s);
-  
-  if (strcmp(args[0], "exit") == 0) {
-    return 0;
-  } else if (strcmp(args[0], "cd") == 0) {
+  while(1){
+    //get data
+    fgets(s, sizeof(s), stdin);
+    //remove newline from fgets
+    *(strchr(s, '\n')) = 0;
     
-  } else {
-    if (fork() == 0) {
-      execvp(args[0], args);
+    //parse
+    char **args = parse_args(s);
+    
+    if (strcmp(args[0], "exit") == 0) {
+      return 0;
+    } else if (strcmp(args[0], "cd") == 0) {
+      chdir(args[1]);
     } else {
-      int status;
-      wait(&status);
-      free(args);
+      if (fork() == 0) {
+	execvp(args[0], args);
+      } else {
+	int status;
+	wait(&status);
+	free(args);
+      }
     }
   }
-  
   return 0;
 }
