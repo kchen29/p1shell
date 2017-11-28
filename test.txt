@@ -1,0 +1,10 @@
+echo TESTS
+echo TEST ls AND ls -l
+ls
+ls -l
+echo TEST cd
+pwd
+cd ..
+pwd
+echo EXIT
+exit
