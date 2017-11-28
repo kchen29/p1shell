@@ -10,3 +10,6 @@ Features:
 Bugs:
 * `cd` doesn't work with ~ for the home directory
 * `cd` with no other args doesn't change to the home directory
+
+Fixed bugs:
+* seg fault when only EOF character is entered as input

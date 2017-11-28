@@ -32,7 +32,9 @@ int main() {
   char s[256];
   while(1){
     //get data
-    fgets(s, sizeof(s), stdin);
+    //fgets returns null when end of file character occurs while no characters have been read
+    if (!fgets(s, sizeof(s), stdin))
+      return 0;
     //remove newline from fgets
     *(strchr(s, '\n')) = 0;
     
