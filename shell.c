@@ -54,7 +54,12 @@ void run_command(char **args) {
   if (strcmp(args[0], "exit") == 0) {
     exit(0);
   } else if (strcmp(args[0], "cd") == 0) {
-    chdir(args[1]);
+    //if no other arguments, go to home directory
+    //may not work on platforms other than linux (have not tested)
+    if (!args[1])
+      chdir(getenv("HOME"));
+    else
+      chdir(args[1]);
     return;
   }
 
