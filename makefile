@@ -4,11 +4,11 @@ all: shell.o
 shell.o: shell.c
 	gcc -c shell.c
 
-test:
+test: all
 	./a.out < test.txt
 
 clean:
 	rm -f *o *~ a.out
 
-run:
+run: all
 	./a.out
