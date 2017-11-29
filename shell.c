@@ -73,7 +73,6 @@ void run_command(char **args) {
     exit(0);
   } else if (strcmp(args[0], "cd") == 0) {
     //if no other arguments, go to home directory
-    //may not work on platforms other than linux (have not tested)
     if (!args[1])
       chdir(getenv("HOME"));
     else
