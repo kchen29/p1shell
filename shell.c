@@ -5,6 +5,19 @@
 #include <sys/wait.h>
 
 /*
+  print current working directory and then $
+ */
+void print_shell_prompt() {
+  char buf[256];
+  getcwd(buf, sizeof(buf));
+
+  //point to last directory
+  char *last_dir = 1 + strrchr(buf, '/');
+  
+  printf("%s$ ", last_dir);
+}
+
+/*
   wrapper for fgets
 
   gets size characters from stdin
@@ -76,6 +89,8 @@ void run_command(char **args) {
 int main() {
   char s[256];
   while(1){
+    print_shell_prompt();
+    
     get_input(s, sizeof(s));
 
     char **args = parse_args(s);
