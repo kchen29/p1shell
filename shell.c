@@ -5,16 +5,21 @@
 #include <sys/wait.h>
 
 /*
-  print current working directory and then $
+  print directory and then $
  */
 void print_shell_prompt() {
   char buf[256];
   getcwd(buf, sizeof(buf));
 
-  //point to last directory
-  char *last_dir = 1 + strrchr(buf, '/');
+  //if the current directory is the home directory, print tilde
+  //otherwise, print the last directory of the current working dir
+  char *dir;
+  if (strcmp(buf, getenv("HOME")) == 0)
+    dir = "~";
+  else
+    dir = 1 + strrchr(buf, '/');
   
-  printf("%s$ ", last_dir);
+  printf("%s$ ", dir);
 }
 
 /*
