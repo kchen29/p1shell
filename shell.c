@@ -61,6 +61,26 @@ char **parse_args(char *line) {
   return args;
 }
 
+// takes ["ls", "-l", ";", "echo", "hello", NULL]
+// returns [["ls", "-l", NULL], ["echo", "hello", NULL], NULL]
+char ***sep_args(char **args){
+  char ***arrr = malloc(20 * sizeof(char **));
+
+  char *delim = ";";
+  int i;
+  int j = 1;
+  arrr[0] = &args[0];
+  for (i = 0; args[i]; i++){
+    if (strcmp(args[i], delim) == 0){
+      args[i] = NULL;
+      arrr[j] = &args[i + 1];
+      j++;
+    }
+  }
+  arrr[j] = NULL;
+  return arrr;
+}
+
 /*
   runs one command
   
@@ -90,6 +110,18 @@ void run_command(char **args) {
   }
 }
 
+/*
+  wrapper for run_command
+  takes [["ls", "-l", NULL], ["echo", "hello", NULL], NULL]
+  and does run_command for each command
+ */
+void run_commands(char ***arrr) {
+  int i;
+  for (i = 0; arrr[i]; i++) {
+    run_command(arrr[i]);
+  }
+}
+
 int main() {
   char s[256];
   while(1){
@@ -98,8 +130,10 @@ int main() {
     get_input(s, sizeof(s));
 
     char **args = parse_args(s);
-
-    run_command(args);
+    char ***arrr = sep_args(args);
+    
+    run_commands(arrr);
+    free(arrr);
     free(args);
   }
   return 0;
