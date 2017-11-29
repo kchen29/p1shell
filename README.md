@@ -8,7 +8,7 @@ Features:
 - [ ] Implement simple pipes, that is: `ls | wc` would run `ls` and use the output from `ls` as the input for `wc`.
 
 Bugs:
-* `cd` doesn't work with ~ for the home directory
+* `cd` doesn't work with ~ for the home directory (no tilde expansion)
 
 Fixed bugs:
 * `cd` with no other args doesn't change to the home directory

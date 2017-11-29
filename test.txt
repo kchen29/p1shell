@@ -6,5 +6,7 @@ echo TEST cd
 pwd
 cd ..
 pwd
+cd
+pwd
 echo EXIT
 exit
