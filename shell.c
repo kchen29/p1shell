@@ -116,14 +116,17 @@ void run_command(char **args) {
       chdir(args[1]);
     return;
   }
+
+  //for other commands, fork and exec; check for redirection
+  
   //look at the second to last arg for "<" or ">"
   //(then the last arg will be a file)
   int len = 0;
   while (args[len]) {
     len++;
   }
-  
-  int newfd = 0;
+
+  //check for redirection
   if (len >= 3) {
     char *redir = args[len - 2];
     if (strcmp(redir, ">") == 0) {
@@ -135,19 +138,19 @@ void run_command(char **args) {
       int fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
     
       //dup
-      newfd = dup(1);
+      int newfd = dup(1);
       dup2(fd, 1);
+      do_command(args);
+        
+      //undo dup
+      if (newfd) {
+	dup2(newfd, 1);
+	close(newfd);
+      }
+      return;
     }
   }
-  
-  //for other commands, fork and exec
   do_command(args);
-  
-  //undo dup
-  if (newfd) {
-    dup2(newfd, 1);
-    close(newfd);
-  }
 }
 
 /*
