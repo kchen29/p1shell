@@ -3,6 +3,9 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 /*
   print directory and then $
@@ -82,8 +85,22 @@ char ***sep_args(char **args){
 }
 
 /*
+  forks and execs
+ */
+void do_command(char **args) {
+  if (fork() == 0) {
+    execvp(args[0], args);
+  } else {
+    int status;
+    wait(&status);
+    //do something here?
+  }
+}
+
+/*
   runs one command
-  
+  accounts for redirection
+
   ex: takes ["ls", "-a", "-l", NULL]
   and forks and execs it
  */
@@ -99,14 +116,37 @@ void run_command(char **args) {
       chdir(args[1]);
     return;
   }
-
+  //look at the second to last arg for "<" or ">"
+  //(then the last arg will be a file)
+  int len = 0;
+  while (args[len]) {
+    len++;
+  }
+  
+  int newfd = 0;
+  if (len >= 3) {
+    char *redir = args[len - 2];
+    if (strcmp(redir, ">") == 0) {
+      //set the redirection to be null
+      args[len - 2] = NULL;
+    
+      //open file
+      char *file = args[len - 1];
+      int fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+    
+      //dup
+      newfd = dup(1);
+      dup2(fd, 1);
+    }
+  }
+  
   //for other commands, fork and exec
-  if (fork() == 0) {
-    execvp(args[0], args);
-  } else {
-    int status;
-    wait(&status);
-    //do something here?
+  do_command(args);
+  
+  //undo dup
+  if (newfd) {
+    dup2(newfd, 1);
+    close(newfd);
   }
 }
 
