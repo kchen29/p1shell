@@ -8,5 +8,8 @@ cd ..
 pwd
 cd
 pwd
+echo TEST semicolon
+ls ; echo hello
+echo next ; ls ; echo after
 echo EXIT
 exit
