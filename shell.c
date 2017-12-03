@@ -127,30 +127,54 @@ void run_command(char **args) {
   }
 
   //check for redirection
-  if (len >= 3) {
-    char *redir = args[len - 2];
-    if (strcmp(redir, ">") == 0) {
-      //set the redirection to be null
-      args[len - 2] = NULL;
+  //if length is less than 3 -> no redirection
+  if (len < 3) {
+    do_command(args);
+    return;
+  }
+
+  //redirection character should be the second to last
+  char *redir = args[len - 2];
+  //check if it is a redirection character
+  if (strcmp(redir, ">") == 0) {
+    //set the redirection to be null
+    args[len - 2] = NULL;
     
-      //open file
-      char *file = args[len - 1];
-      int fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+    //open file
+    char *file = args[len - 1];
+    int fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
     
-      //dup
-      int newfd = dup(1);
-      dup2(fd, 1);
-      do_command(args);
+    //dup
+    int newfd = dup(1);
+    dup2(fd, 1);
+    
+    do_command(args);
         
-      //undo dup
-      if (newfd) {
-	dup2(newfd, 1);
-	close(newfd);
-      }
+    //undo dup
+    dup2(newfd, 1);
+    close(newfd);
+  } else if (strcmp(redir, "<") == 0) {
+    args[len - 2] = NULL;
+
+    char *file = args[len - 1];
+    int fd = open(file, O_RDONLY, 0644);
+
+    if (fd == -1) {
+      printf("%s: No such file or directory\n", file);
       return;
     }
+    
+    int newfd = dup(0);
+    dup2(fd, 0);
+
+    do_command(args);
+
+    dup2(newfd, 0);
+    close(newfd);
+  } else {
+    //if it isn't, then simply do it
+    do_command(args);
   }
-  do_command(args);
 }
 
 /*

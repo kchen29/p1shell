@@ -4,7 +4,7 @@ all: shell.o
 shell.o: shell.c
 	gcc -c shell.c
 
-test: all
+test: all test.txt
 	./a.out < test.txt
 
 clean:

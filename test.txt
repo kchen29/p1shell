@@ -6,10 +6,16 @@ echo TEST cd
 pwd
 cd ..
 pwd
-cd
+cd p1shell
 pwd
 echo TEST semicolon
 ls ; echo hello
 echo next ; ls ; echo after
+echo TEST redirection
+echo echo this went in > redir.txt
+echo this got put in:
+cat < redir.txt
+./a.out < redir.txt
+rm redir.txt
 echo EXIT
 exit
