@@ -102,7 +102,7 @@ void do_command(char **args) {
   accounts for redirection
 
   ex: takes ["ls", "-a", "-l", NULL]
-  and forks and execs it
+  and uses do_command
  */
 void run_command(char **args) {
   //special case exit and cd
