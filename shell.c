@@ -56,6 +56,9 @@ char **parse_args(char *line) {
   int i = 0;
   while (line) {
     char *arg = strsep(&line, " ");
+    //get rid of extra spaces
+    if (strcmp(arg, "") == 0)
+      continue;
     args[i] = arg;
     i++;
   }
