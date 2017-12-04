@@ -6,7 +6,6 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include "shell.h"
 
 /*
   print directory and then $
