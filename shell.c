@@ -103,7 +103,7 @@ void do_command(char **args) {
   }
 }
 
-
+/*
 void piper(char *fir, char *sec){
   FILE * fp1 = popen(fir, "r");
   FILE * fp2 = popen(sec, "w");
@@ -115,9 +115,7 @@ void piper(char *fir, char *sec){
   pclose(fp2);
   return;
 }
-
-
-
+*/
 
 /*
   runs one command
@@ -147,16 +145,20 @@ void run_command(char **args) {
   //look at the second to last arg for "<" or ">"
   //(then the last arg will be a file)
   int len = 0;
+  /*
   char *** temp;
   int t = 0;
+  */
   while (args[len]) {
+    /*
     if (strcmp(args[len], "|") == 0){
       temp = sep_args(args, "|");
       t = 1;
     }
+    */
     len++;
   }
-
+  /*
    if (t){
     t = 0;
     char *fir;
@@ -173,7 +175,7 @@ void run_command(char **args) {
     piper(fir, sec);
     return;
     }
-  
+  */
   //check for redirection
   //if length is less than 3 -> no redirection
   if (len < 3) {
