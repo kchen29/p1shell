@@ -59,3 +59,7 @@ Function Headers:
 * void run_commands(char ***arrr);
    * input: the array of arrays of strings based on number of commands, and number of spaces in each
    * wrapper for run_command
+
+
+* main()
+   * Runs an infinite while loop that takes user's input and runs each line they type
