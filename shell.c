@@ -18,11 +18,12 @@ void print_shell_prompt() {
   //if the current directory is the home directory, print tilde
   //otherwise, print the last directory of the current working dir
   char *dir;
-  if (strcmp(buf, getenv("HOME")) == 0)
+  if (strcmp(buf, getenv("HOME")) == 0){
     dir = "~";
-  else
+  }
+  else{
     dir = 1 + strrchr(buf, '/');
-  
+  }
   printf("%s$ ", dir);
 }
 
@@ -36,8 +37,9 @@ void print_shell_prompt() {
 void get_input(char *s, int size) {
   //fgets returns null when end of file character occurs
   //while no characters have been read
-  if (!fgets(s, size, stdin))
+  if (!fgets(s, size, stdin)){
     exit(0);
+  }
   //remove newline
   *(strchr(s, '\n')) = 0;
 }
@@ -58,8 +60,9 @@ char **parse_args(char *line) {
   while (line) {
     char *arg = strsep(&line, " ");
     //get rid of extra spaces
-    if (strcmp(arg, "") == 0)
+    if (strcmp(arg, "") == 0){
       continue;
+    }
     args[i] = arg;
     i++;
   }
@@ -70,10 +73,9 @@ char **parse_args(char *line) {
 
 // takes ["ls", "-l", ";", "echo", "hello", NULL]
 // returns [["ls", "-l", NULL], ["echo", "hello", NULL], NULL]
-char ***sep_args(char **args){
+char ***sep_args(char **args, char *delim){
   char ***arrr = malloc(20 * sizeof(char **));
 
-  char *delim = ";";
   int i;
   int j = 1;
   arrr[0] = &args[0];
@@ -101,6 +103,22 @@ void do_command(char **args) {
   }
 }
 
+
+void piper(char *fir, char *sec){
+  FILE * fp1 = popen(fir, "r");
+  FILE * fp2 = popen(sec, "w");
+  char path[1024];
+  while(fgets(path, sizeof(path), fp1)){
+    fprintf(fp2, "%s", path);
+  }
+  pclose(fp1);
+  pclose(fp2);
+  return;
+}
+
+
+
+
 /*
   runs one command
   accounts for redirection
@@ -112,24 +130,51 @@ void run_command(char **args) {
   //special case exit and cd
   if (strcmp(args[0], "exit") == 0) {
     exit(0);
-  } else if (strcmp(args[0], "cd") == 0) {
+  }
+  else if (strcmp(args[0], "cd") == 0) {
     //if no other arguments, go to home directory
-    if (!args[1])
+    if (!args[1]){
       chdir(getenv("HOME"));
-    else
+    }
+    else{
       chdir(args[1]);
+    }
     return;
   }
-
+  
   //for other commands, fork and exec; check for redirection
   
   //look at the second to last arg for "<" or ">"
   //(then the last arg will be a file)
   int len = 0;
-  while (args[len]) {
+  // char *** temp;
+  // int t = 0;
+  while (args[len]) { 
     len++;
+    /*
+    if (strcmp(args[len], "|") == 0){
+      temp = sep_args(args, "|");
+      t = 1;
+      }*/
   }
 
+  /* if (t){
+    t = 0;
+    char *fir;
+    char *sec;
+    while (temp[0][t]) {
+      strcat(fir, temp[0][t]);
+      t++;
+    }
+    t = 0;
+    while (temp[1][t]) {
+      strcat(fir, temp[1][t]);
+      t++;
+    }
+    piper(fir, sec);
+    return;
+    }*/
+  
   //check for redirection
   //if length is less than 3 -> no redirection
   if (len < 3) {
@@ -174,7 +219,7 @@ void run_command(char **args) {
     do_command(args);
 
     dup2(newfd, 0);
-    close(newfd);
+    close(newfd); 
   } else {
     //if it isn't, then simply do it
     do_command(args);
@@ -199,9 +244,8 @@ int main() {
     print_shell_prompt();
     
     get_input(s, sizeof(s));
-
     char **args = parse_args(s);
-    char ***arrr = sep_args(args);
+    char ***arrr = sep_args(args, ";");
     
     run_commands(arrr);
     free(arrr);
