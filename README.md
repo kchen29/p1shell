@@ -17,6 +17,9 @@ Fixed bugs:
 * `cd` with no other args doesn't change to the home directory
 * seg fault when only EOF character is entered as input
 
+
+
+
 Function Headers:
 * void print_shell_prompt();
    * if the current directory is the home directory, print tilde
