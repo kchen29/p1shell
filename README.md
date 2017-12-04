@@ -45,7 +45,17 @@ Function Headers:
    * takes ["ls", "-l", ";", "echo", "hello", NULL]
    * returns [["ls", "-l", NULL], ["echo", "hello", NULL], NULL]
    
-* void do_command(char **args);
    
-void run_command(char **args);
-void run_commands(char ***arrr);
+* void do_command(char **args);
+   * forks off a child process and makes it do the exec'ing
+   
+   
+* void run_command(char **args);
+   * input: the command to run, in an array of strings separated by spaces
+   * runs a single command
+   * accounts for cd, exit, <, and >
+   
+   
+* void run_commands(char ***arrr);
+   * input: the array of arrays of strings based on number of commands, and number of spaces in each
+   * wrapper for run_command
