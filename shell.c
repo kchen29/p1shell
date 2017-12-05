@@ -96,6 +96,9 @@ char ***sep_args(char **args, char *delim){
 void do_command(char **args) {
   if (fork() == 0) {
     execvp(args[0], args);
+    //can continue if command doesn't exist
+    printf("%s: command not found\n", args[0]);
+    exit(1);
   } else {
     int status;
     wait(&status);
