@@ -4,8 +4,8 @@ Features:
 - [x] Read a line at a time, parse the line to separate the command from its arguments. It should then fork and exec the command. The parent process should wait until the exec'd program exits and then it should read the next command. Assumes no more than 19 arguments
 
 - [x] Read and separate multiple commands on one line with `;`. That is, the line `ls -l ; echo hello` should first run the command `ls -l` and then `echo hello`.
-- [x] Implement simple redirection using `>` (redirecting stdout) and `<` (redirecting stdin). Assume redirection is of the form `<command> <redirection character> <file>`. Only 1 redirection per command (separated by `";"`)
-- [x] Implement simple pipes `|`
+- [x] Implement simple redirection using `>` (redirecting stdout) and `<` (redirecting stdin). Assume redirection is of the form `<command> <redirection character> <file>`. Only 1 redirection per command (separated by `";"`).
+- [x] Implement simple pipes `|`. Pipe is of the form `<command> | <command>`. Only 1 pipe per command.
 
 Bugs:
 * `cd` doesn't work with ~ for the home directory (no tilde expansion)
