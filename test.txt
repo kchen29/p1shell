@@ -17,6 +17,7 @@ echo this got put in:
 cat < redir.txt
 ./a.out < redir.txt
 rm redir.txt
+echo TEST pipe
 ls | wc
 echo EXIT
 exit
