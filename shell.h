@@ -5,3 +5,4 @@ char ***sep_args(char **args, char *delim);
 void do_command(char **args);
 void run_command(char **args);
 void run_commands(char ***arrr);
+void piper(char *fir, char *sec);

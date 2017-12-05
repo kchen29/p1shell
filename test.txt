@@ -17,5 +17,6 @@ echo this got put in:
 cat < redir.txt
 ./a.out < redir.txt
 rm redir.txt
+ls | wc
 echo EXIT
 exit

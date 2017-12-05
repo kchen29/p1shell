@@ -103,7 +103,8 @@ void do_command(char **args) {
   }
 }
 
-
+//opens a pipe between the two arguments
+//path acts as a temporary buffer, taking the output of fir using fgets, and sending it to sec using fprintf
 void piper(char *fir, char *sec){
   FILE * fp1 = popen(fir, "r");
   FILE * fp2 = popen(sec, "w");
@@ -150,7 +151,7 @@ void run_command(char **args) {
   int t = 0;
   
   while (args[len]) {
-    
+    //check if there is a pipe, and split the commands if it exits
     if (strcmp(args[len], "|") == 0){
       temp = sep_args(args, "|");
       t = 1;
@@ -158,7 +159,7 @@ void run_command(char **args) {
     
     len++;
   }
-  
+  //combine the two 2d arrays into 2 1d arrays to be used with popen
    if (t){
     t = 0;
     char fir[1024];
