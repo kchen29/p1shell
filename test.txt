@@ -18,6 +18,9 @@ cat < redir.txt
 ./a.out < redir.txt
 rm redir.txt
 echo TEST pipe
+echo wordcount of ls
 ls | wc
+echo wordcount of ls -l
+ls -l | wc
 echo EXIT
 exit

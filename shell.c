@@ -168,11 +168,17 @@ void run_command(char **args) {
     memset(sec, 0, 1024);
     while (temp[0][t]) {
       strcat(fir, temp[0][t]);
+      if (temp[0][t + 1]){
+	strcat(fir, " ");
+      }
       t++;
     }
     t = 0;
     while (temp[1][t]) {
       strcat(sec, temp[1][t]);
+      if (temp[1][t + 1]){
+	strcat(sec, " ");
+      }
       t++;
     }
     piper(fir, sec);
