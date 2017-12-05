@@ -5,9 +5,7 @@ Features:
 
 - [x] Read and separate multiple commands on one line with `;`. That is, the line `ls -l ; echo hello` should first run the command `ls -l` and then `echo hello`.
 - [x] Implement simple redirection using `>` (redirecting stdout) and `<` (redirecting stdin). Assume redirection is of the form `<command> <redirection character> <file>`. Only 1 redirection per command (separated by `";"`)
-
-Attempted:
-* Pipes did not work
+- [x] Implement simple pipes `|`
 
 Bugs:
 * `cd` doesn't work with ~ for the home directory (no tilde expansion)
@@ -62,6 +60,11 @@ Function Headers:
    * input: the array of arrays of strings based on number of commands, and number of spaces in each
    * wrapper for run_command
 
+* void piper(char *fir, char *sec);
+   * input: two commands to be piped together
+   * the output of fir is used as the input of sec
+   * opens a pipe between the two arguments
+   * "path" acts as a temporary buffer, taking the output of fir using fgets, and sending it to sec using fprintf
 
 * main()
    * Runs an infinite while loop that takes user's input and runs each line they type
